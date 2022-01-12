@@ -1,4 +1,4 @@
-status=""
+status = ""
 objects = [];
 
 
@@ -31,13 +31,14 @@ function modelLoaded() {
 
 
 
-function gotResult(error, results) {
+function gotResults(error, results) {
     if (error) {
         console.log(error);
     }
     console.log(results);
     objects = results;
 }
+
 function draw() {
     image(video, 0, 0, 380, 480);
 
@@ -45,7 +46,7 @@ function draw() {
         r = random(255);
         g = random(255);
         b = random(255);
-        objectDetector.detect(video, gotResult);
+        objectDetector.detect(video, gotResults);
         for (i = 0; i < objects.length; i++) {
             document.getElementById("status").innerHTML = "Status : Baby Detected";
 
@@ -56,12 +57,21 @@ function draw() {
             noFill();
             stroke(r, g, b);
             rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
-            img.stop()
+
+            if (objects[i].label == "person") {
+                document.getElementById("status").innerHTML = "Status : Baby found! Yay! :)";
+                img.stop();
+
+
+
+            } else {
+                document.getElementById("status").innerHTML = "Status : Baby not found! oh no! :(";
+                img.play();
+
+            }
         }
+
     }
-    else {
-        document.getElementById("status").innerHTML = "Status : Baby not found! oh noo! :(";
-        img.play();
-    }
+
 
 }
